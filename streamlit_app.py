@@ -6,15 +6,55 @@ import numpy as np
 page_title = "HarmonySplashes (TCS Sustainathon2024)"
 st.set_page_config(page_title=page_title)
 
-# Add CSS for background image
+# Add CSS for a colorful and stylish background
 page_bg_img = '''
 <style>
-.stApp {
-    background-image: url("https://images.unsplash.com/photo-1498928679065-7f48a6bc86d6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+body {
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    color: #333;
+    font-family: 'Arial', sans-serif;
 }
+
+h1, h2, h3 {
+    color: #2a2a2a;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+.stTitle {
+    color: #ffffff;
+    background-color: #007acc;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+}
+
+.stButton > button {
+    background-color: #007acc;
+    color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+}
+
+.stButton > button:hover {
+    background-color: #005f9e;
+}
+
+.stDataFrame {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+    padding: 10px;
+}
+
+.stNumberInput {
+    border-radius: 8px;
+    border: 1px solid #007acc;
+}
+
+.stNumberInput input {
+    color: #007acc;
+}
+
 </style>
 '''
 st.markdown(page_bg_img, unsafe_allow_html=True)
@@ -46,7 +86,7 @@ def generate_random_data(num_samples=10):
 # Generate and display random sample data
 df = generate_random_data(10)
 st.subheader("Generated Sample Data")
-st.dataframe(df)
+st.dataframe(df, use_container_width=True)
 
 # Predict based on new input data using numpy (no ML model)
 st.subheader("Predict Desired Temperature based on new input data")
