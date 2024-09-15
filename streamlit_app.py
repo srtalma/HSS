@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_squared_error, r2_score
 
 # Set page title and background image
 page_title = "HarmonySplashes (TCS Sustainathon2024)"
@@ -24,49 +22,60 @@ st.markdown(page_bg_img, unsafe_allow_html=True)
 # Add title
 st.title(page_title)
 
-# Sample data (for illustration purposes)
+# Sample data generation using numpy
 st.subheader("Sample Data")
 
-# Create and display some dummy data
-data = {
-    'ExternalTemp': [10, 15, 20],
-    'RoomTemp': [22, 23, 21],
-    'RoomHumidity': [50, 45, 55],
-    'FlowRate': [8, 9, 7],
-    'ColdWaterTemp': [12, 16, 18],
-    'DesiredTemp': [16.3, 17.5, 18.2]
-}
+# Generate some random data for demonstration purposes
+np.random.seed(42)
+external_temp = np.random.uniform(10, 35, 100)
+room_temp = np.random.uniform(15, 30, 100)
+room_humidity = np.random.uniform(30, 70, 100)
+flow_rate = np.random.uniform(5, 20, 100)
+cold_water_temp = np.random.uniform(5, 25, 100)
 
-df = pd.DataFrame(data)
-st.dataframe(df)
+# Define desired temperature as a linear combination of the features (for simplicity)
+desired_temp = 0.5 * external_temp + 0.3 * room_temp - 0.2 * room_humidity + 0.1 * flow_rate + 0.15 * cold_water_temp + np.random.normal(0, 1, 100)
 
-# Example of model training (RandomForestRegressor)
-X = df.drop(columns=['DesiredTemp'])
-y = df['DesiredTemp']
+# Create a DataFrame to display the data
+df = pd.DataFrame({
+    'ExternalTemp': external_temp,
+    'RoomTemp': room_temp,
+    'RoomHumidity': room_humidity,
+    'FlowRate': flow_rate,
+    'ColdWaterTemp': cold_water_temp,
+    'DesiredTemp': desired_temp
+})
 
-model = RandomForestRegressor(random_state=42)
-model.fit(X, y)
+st.dataframe(df.head())
 
-# Predict on new data
+# Linear regression using numpy (no sklearn)
+X = np.c_[external_temp, room_temp, room_humidity, flow_rate, cold_water_temp]
+X_b = np.c_[np.ones((X.shape[0], 1)), X]  # Add bias (intercept) term
+theta_best = np.linalg.inv(X_b.T.dot(X_b)).dot(X_b.T).dot(desired_temp)  # Normal equation
+
+# Prediction function
+def predict(features, theta):
+    features_b = np.c_[np.ones((features.shape[0], 1)), features]  # Add bias term
+    return features_b.dot(theta)
+
+# Predict based on new input data
 st.subheader("Predict Desired Temperature based on new input data")
 
-new_data = {
-    'ExternalTemp': st.number_input('External Temperature', value=15),
-    'RoomTemp': st.number_input('Room Temperature', value=22),
-    'RoomHumidity': st.number_input('Room Humidity', value=48),
-    'FlowRate': st.number_input('Flow Rate', value=9),
-    'ColdWaterTemp': st.number_input('Cold Water Temperature', value=16)
-}
+new_data = np.array([[st.number_input('External Temperature', value=15),
+                      st.number_input('Room Temperature', value=22),
+                      st.number_input('Room Humidity', value=48),
+                      st.number_input('Flow Rate', value=9),
+                      st.number_input('Cold Water Temperature', value=16)]])
 
-input_df = pd.DataFrame([new_data])
-predicted_temp = model.predict(input_df)[0]
+predicted_temp = predict(new_data, theta_best)[0]
 
 st.write(f"**Predicted Desired Temperature: {predicted_temp:.2f}**")
 
 # Model evaluation (for display purposes)
-y_pred = model.predict(X)
-mse = mean_squared_error(y, y_pred)
-r2 = r2_score(y, y_pred)
+y_pred = predict(X, theta_best)
+
+mse = np.mean((y_pred - desired_temp) ** 2)
+r2 = 1 - (np.sum((desired_temp - y_pred) ** 2) / np.sum((desired_temp - np.mean(desired_temp)) ** 2))
 
 st.subheader("Model Evaluation")
 st.write(f"Mean Squared Error: {mse}")
