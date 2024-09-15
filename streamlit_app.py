@@ -101,7 +101,7 @@ def generate_random_data(num_samples=10):
 df = generate_random_data(10)
 
 # Predict based on new input data using numpy (no ML model)
-st.subheader("Your Perfect Shower Temperature is ")
+st.subheader("Predict desired temperature using AI model ")
 
 ext_temp = st.number_input('External Temperature', value=15)
 room_temp = st.number_input('Room Temperature', value=22)
@@ -116,6 +116,6 @@ predicted_temp = (0.5 * ext_temp + 0.3 * room_temp + 0.1 * room_humidity +
 # Display the prediction with enhanced styling
 st.markdown(f'''
     <div class="predicted-text">
-        Predicted Desired Temperature: {predicted_temp:.2f}
+        Your Perfect Shower Temperature is: {predicted_temp:.2f}
     </div>
 ''', unsafe_allow_html=True)
