@@ -101,7 +101,7 @@ def generate_random_data(num_samples=10):
 df = generate_random_data(10)
 
 # Predict based on new input data using numpy (no ML model)
-st.subheader("Predict Desired Temperature based on new input data")
+st.subheader("Your Perfect Shower Temperature is ")
 
 ext_temp = st.number_input('External Temperature', value=15)
 room_temp = st.number_input('Room Temperature', value=22)
