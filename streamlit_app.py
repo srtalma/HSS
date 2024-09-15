@@ -3,10 +3,10 @@ import pandas as pd
 import numpy as np
 
 # Set page title and background image
-page_title = "HarmonySplashes (TCS Sustainathon2024)"
+page_title = "HarmonySplashes"
 st.set_page_config(page_title=page_title)
 
-# Add CSS for a colorful and stylish background
+# Add CSS for colorful title and stylish background
 page_bg_img = '''
 <style>
 body {
@@ -15,17 +15,18 @@ body {
     font-family: 'Arial', sans-serif;
 }
 
-h1, h2, h3 {
-    color: #2a2a2a;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+h1 {
+    color: #ff6f61;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    text-align: center;
+    margin: 0;
 }
 
-.stTitle {
-    color: #ffffff;
-    background-color: #007acc;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+h2 {
+    color: #007acc;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    text-align: center;
+    margin-top: -10px; /* Adjust spacing */
 }
 
 .stButton > button {
@@ -69,8 +70,11 @@ h1, h2, h3 {
 '''
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
-# Add title
-st.title(page_title)
+# Add title with colorful styling
+st.markdown(f'''
+    <h1>{page_title}</h1>
+    <h2>TCS Sustainathon2024</h2>
+''', unsafe_allow_html=True)
 
 # Function to generate additional random data
 def generate_random_data(num_samples=10):
