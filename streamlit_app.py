@@ -55,6 +55,16 @@ h1, h2, h3 {
     color: #007acc;
 }
 
+.predicted-text {
+    font-size: 32px;
+    font-weight: bold;
+    color: #ff6f61;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
+    text-align: center;
+}
 </style>
 '''
 st.markdown(page_bg_img, unsafe_allow_html=True)
@@ -83,10 +93,8 @@ def generate_random_data(num_samples=10):
 
     return pd.DataFrame(data)
 
-# Generate and display random sample data
+# Generate random sample data (optional for demonstration)
 df = generate_random_data(10)
-st.subheader("Generated Sample Data")
-st.dataframe(df, use_container_width=True)
 
 # Predict based on new input data using numpy (no ML model)
 st.subheader("Predict Desired Temperature based on new input data")
@@ -101,4 +109,9 @@ cold_water_temp = st.number_input('Cold Water Temperature', value=16)
 predicted_temp = (0.5 * ext_temp + 0.3 * room_temp + 0.1 * room_humidity + 
                   0.05 * flow_rate + 0.05 * cold_water_temp) / 2
 
-st.write(f"**Predicted Desired Temperature: {predicted_temp:.2f}**")
+# Display the prediction with enhanced styling
+st.markdown(f'''
+    <div class="predicted-text">
+        Predicted Desired Temperature: {predicted_temp:.2f}
+    </div>
+''', unsafe_allow_html=True)
